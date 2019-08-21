@@ -118,15 +118,14 @@ export default class Master {
   }
 
   shouldCauseFailure(status, attemptNumber) {
-    const isStrict = this.options.strict
     const shouldRetry =
       status === Status.FAILED && attemptNumber <= this.options.retry
-    if (shouldRetry && !isStrict) {
+    if (shouldRetry) {
       return false
     }
     return (
       _.includes([Status.AMBIGUOUS, Status.FAILED, Status.UNDEFINED], status) ||
-      (status === Status.PENDING && isStrict)
+      (status === Status.PENDING && this.options.strict)
     )
   }
 }
